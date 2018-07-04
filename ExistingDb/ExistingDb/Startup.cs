@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using ExistingDb.Models.Scaffold;
 using Microsoft.EntityFrameworkCore;
+using ExistingDb.Models.Manual;
 
 namespace ExistingDb {
     public class Startup {
@@ -20,7 +21,11 @@ namespace ExistingDb {
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc();
             string conString = Configuration["ConnectionStrings:DefaultConnection"];
+
             services.AddDbContext<ScaffoldContext>(options =>
+                options.UseSqlServer(conString));
+
+            services.AddDbContext<ManualContext>(options =>
                 options.UseSqlServer(conString));
         }
 
