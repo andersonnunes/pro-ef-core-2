@@ -6,7 +6,9 @@ namespace AdvancedApp.Models {
     public class AdvancedContext : DbContext {
 
         public AdvancedContext(DbContextOptions<AdvancedContext> options)
-            : base(options) {}
+                : base(options) {
+            Database.AutoTransactionsEnabled = false;
+        }
 
         public DbSet<Employee> Employees { get; set; }
 
