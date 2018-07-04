@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace AdvancedApp.Controllers {
 
@@ -12,8 +13,12 @@ namespace AdvancedApp.Controllers {
         public HomeController(AdvancedContext ctx) => context = ctx;
         
         public IActionResult Index() {
-            return View(context.Employees.Include(e => e.OtherIdentity)
-                .OrderByDescending(e => EF.Property<DateTime>(e, "LastUpdated")));
+            IEnumerable<Employee> data = context.Employees
+                .Include(e => e.OtherIdentity)
+                .OrderByDescending(e => e.LastUpdated)
+                .ToArray();
+            ViewBag.Secondaries = data.Select(e => e.OtherIdentity);
+            return View(data);
         }
 
         public IActionResult Edit(string SSN, string firstName, string familyName) {
@@ -33,7 +38,8 @@ namespace AdvancedApp.Controllers {
             } else {
                 Employee e = new Employee {
                     SSN = employee.SSN, FirstName = employee.FirstName,
-                    FamilyName = employee.FamilyName, RowVersion = employee.RowVersion
+                    FamilyName = employee.FamilyName,
+                    RowVersion = employee.RowVersion
                 };
                 context.Employees.Attach(e);
                 e.Salary = employee.Salary;
@@ -45,7 +51,7 @@ namespace AdvancedApp.Controllers {
 
         [HttpPost]
         public IActionResult Delete(Employee employee) {
-            context.Attach(employee);
+            context.Employees.Attach(employee);
             employee.SoftDeleted = true;
             context.SaveChanges();
             return RedirectToAction(nameof(Index));
