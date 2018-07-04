@@ -31,6 +31,11 @@ namespace DataApp {
             services.AddTransient<IDataRepository, EFDataRepository>();
             services.AddTransient<ICustomerRepository, EFCustomerRepository>();
             services.AddTransient<MigrationsManager>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<IGenericRepository<ContactDetails>, 
+                GenericRepository<ContactDetails>>();
+            services.AddTransient<IGenericRepository<ContactLocation>,
+                GenericRepository<ContactLocation>>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
