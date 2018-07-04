@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using AdvancedApp.Models;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace AdvancedApp {
     public class Startup {
@@ -21,7 +22,8 @@ namespace AdvancedApp {
             services.AddMvc();
             string conString = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<AdvancedContext>(options =>
-                options.UseSqlServer(conString));
+                options.UseSqlServer(conString).ConfigureWarnings(warning => 
+                    warning.Throw(RelationalEventId.QueryClientEvaluationWarning)));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {

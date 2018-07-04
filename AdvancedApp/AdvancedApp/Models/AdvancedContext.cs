@@ -5,11 +5,16 @@ namespace AdvancedApp.Models {
     public class AdvancedContext : DbContext {
 
         public AdvancedContext(DbContextOptions<AdvancedContext> options)
-            : base(options) { }
+                : base(options) {
+            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
 
         public DbSet<Employee> Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+            modelBuilder.Entity<Employee>()
+                .HasQueryFilter(e => !e.SoftDeleted);
 
             modelBuilder.Entity<Employee>().Ignore(e => e.Id);
             modelBuilder.Entity<Employee>()
