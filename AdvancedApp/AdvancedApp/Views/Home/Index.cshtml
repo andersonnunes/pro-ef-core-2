@@ -7,29 +7,35 @@
 <table class="table table-sm table-striped">
     <thead>
         <tr>
-            <th>Key</th>
             <th>SSN</th>
             <th>First Name</th>
             <th>Family Name</th>
             <th>Salary</th>
+            <th>Other Name</th>
+            <th>In Use</th>
+            <th>Last Updated</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr class="placeholder"><td colspan="7" class="text-center">No Data</td></tr>
+        <tr class="placeholder"><td colspan="8" class="text-center">No Data</td></tr>
         @foreach (Employee e in Model) {
             <tr>
-                <td>@e.Id</td>
                 <td>@e.SSN</td>
                 <td>@e.FirstName</td>
                 <td>@e.FamilyName</td>
                 <td>@e.Salary</td>
+                <td>@(e.OtherIdentity?.Name ?? "(None)")</td>
+                <td>@(e.OtherIdentity?.InActiveUse.ToString() ?? "(N/A)")</td>
+                <td>@e.LastUpdated.ToLocalTime()</td>
                 <td class="text-right">
                     <form>
                         <input type="hidden" name="SSN" value="@e.SSN" />
                         <input type="hidden" name="Firstname" value="@e.FirstName" />
                         <input type="hidden" name="FamilyName"
                                value="@e.FamilyName" />
+                        <input type="hidden" name="RowVersion"
+                               asp-for="@e.RowVersion" />
                         <button type="submit" asp-action="Delete" formmethod="post"
                                 class="btn btn-sm btn-danger">
                             Delete
@@ -44,11 +50,6 @@
         }
     </tbody>
 </table>
-@if (ViewBag.PageSize != null) {
-    <h4 class="bg-info p-2 text-center text-white">
-        Page Size: @ViewBag.PageSize bytes
-    </h4>
-}
 <div class="text-center">
     <a asp-action="Edit" class="btn btn-primary">Create</a>
 </div>

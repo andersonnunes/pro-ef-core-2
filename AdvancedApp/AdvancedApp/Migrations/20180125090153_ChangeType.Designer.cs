@@ -11,9 +11,10 @@ using System;
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    partial class AdvancedContextModelSnapshot : ModelSnapshot
+    [Migration("20180125090153_ChangeType")]
+    partial class ChangeType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,17 +29,8 @@ namespace AdvancedApp.Migrations
 
                     b.Property<string>("FamilyName");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.Property<decimal>("Salary")
-                        .HasColumnType("decimal(8,2)")
-                        .HasAnnotation("PropertyAccessMode", PropertyAccessMode.Field);
+                        .HasColumnType("decimal(8,2)");
 
                     b.Property<bool>("SoftDeleted");
 
