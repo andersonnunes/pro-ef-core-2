@@ -22,14 +22,28 @@ namespace DataApp {
             string conString = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<EFDatabaseContext>(options =>
                 options.UseSqlServer(conString));
+
+            string customerConString = 
+                Configuration["ConnectionStrings:CustomerConnection"];
+            services.AddDbContext<EFCustomerContext>(options =>
+                options.UseSqlServer(customerConString));
+
             services.AddTransient<IDataRepository, EFDataRepository>();
+            services.AddTransient<ICustomerRepository, EFCustomerRepository>();
+            services.AddTransient<MigrationsManager>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+                EFDatabaseContext prodCtx, EFCustomerContext custCtx) {
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+
+            if (env.IsDevelopment()) {
+                SeedData.Seed(prodCtx);
+                SeedData.Seed(custCtx);
+            }
         }
     }
 }
