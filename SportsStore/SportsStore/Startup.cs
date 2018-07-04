@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SportsStore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace SportsStore {
     public class Startup {
@@ -18,10 +19,13 @@ namespace SportsStore {
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) {
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(opts =>
+                opts.SerializerSettings.ReferenceLoopHandling 
+                    = ReferenceLoopHandling.Serialize);
             services.AddTransient<IRepository, DataRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IOrdersRepository, OrdersRepository>();
+            services.AddTransient<IWebServiceRepository, WebServiceRepository>();
             string conString = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(conString));
