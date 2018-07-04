@@ -23,13 +23,20 @@ namespace AdvancedApp.Models {
                 .Property(e => e.Salary).HasColumnType("decimal(8,2)")
                 .HasField("databaseSalary")
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
-                //.IsConcurrencyToken();
 
             modelBuilder.Entity<Employee>().Property<DateTime>("LastUpdated")
                 .HasDefaultValue(new DateTime(2000, 1, 1));
 
             modelBuilder.Entity<Employee>()
-                .Property(e => e.RowVersion).IsRowVersion();
+                .Ignore(e => e.RowVersion);
+            //    .Property(e => e.RowVersion).IsRowVersion();
+
+            modelBuilder.HasSequence<int>("ReferenceSequence")
+                .StartsAt(100)
+                .IncrementsBy(2);
+
+            modelBuilder.Entity<Employee>().Property(e => e.GeneratedValue)
+                .ValueGeneratedOnAddOrUpdate();
 
             modelBuilder.Entity<SecondaryIdentity>()
                 .HasOne(s => s.PrimaryIdentity)

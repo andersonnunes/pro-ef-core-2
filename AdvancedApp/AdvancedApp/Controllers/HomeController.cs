@@ -12,11 +12,12 @@ namespace AdvancedApp.Controllers {
 
         public HomeController(AdvancedContext ctx) => context = ctx;
         
-        public IActionResult Index() {
-            IEnumerable<Employee> data = context.Employees
-                .Include(e => e.OtherIdentity)
-                .OrderByDescending(e => e.LastUpdated)
-                .ToArray();
+        public IActionResult Index(string searchTerm) {
+            IQueryable<Employee> query = context.Employees.Include(e => e.OtherIdentity);
+            if (!string.IsNullOrEmpty(searchTerm)) {
+                query = query.Where(e => EF.Functions.Like(e.GeneratedValue, searchTerm));
+            }
+            IEnumerable<Employee> data = query.ToArray();
             ViewBag.Secondaries = data.Select(e => e.OtherIdentity);
             return View(data);
         }

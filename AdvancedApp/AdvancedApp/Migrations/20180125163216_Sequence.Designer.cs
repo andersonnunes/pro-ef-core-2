@@ -11,9 +11,10 @@ using System;
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    partial class AdvancedContextModelSnapshot : ModelSnapshot
+    [Migration("20180125163216_Sequence")]
+    partial class Sequence
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +31,9 @@ namespace AdvancedApp.Migrations
                     b.Property<string>("FamilyName");
 
                     b.Property<string>("GeneratedValue")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql(@"'REFERENCE_' 
+                    + CONVERT(varchar, NEXT VALUE FOR ReferenceSequence)");
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAdd()

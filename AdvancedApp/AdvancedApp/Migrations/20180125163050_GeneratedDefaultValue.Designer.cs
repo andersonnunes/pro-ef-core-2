@@ -11,14 +11,14 @@ using System;
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    partial class AdvancedContextModelSnapshot : ModelSnapshot
+    [Migration("20180125163050_GeneratedDefaultValue")]
+    partial class GeneratedDefaultValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
-                .HasAnnotation("Relational:Sequence:.ReferenceSequence", "'ReferenceSequence', '', '100', '2', '', '', 'Int32', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AdvancedApp.Models.Employee", b =>
@@ -30,7 +30,8 @@ namespace AdvancedApp.Migrations
                     b.Property<string>("FamilyName");
 
                     b.Property<string>("GeneratedValue")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAdd()

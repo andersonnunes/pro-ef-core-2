@@ -22,8 +22,9 @@ namespace AdvancedApp {
             services.AddMvc();
             string conString = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<AdvancedContext>(options =>
-                options.UseSqlServer(conString).ConfigureWarnings(warning => 
-                    warning.Throw(RelationalEventId.QueryClientEvaluationWarning)));
+                options.UseSqlServer(conString));
+                    //.ConfigureWarnings(warning => warning.Throw(
+                    // RelationalEventId.QueryClientEvaluationWarning)));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) {

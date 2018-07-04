@@ -21,5 +21,7 @@ namespace AdvancedApp.Models {
 
         public DateTime LastUpdated { get; set; }
         public byte[] RowVersion { get; set; }
+
+        public string GeneratedValue { get; set; }
     }
 }

@@ -11,9 +11,10 @@ using System;
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    partial class AdvancedContextModelSnapshot : ModelSnapshot
+    [Migration("20180125163609_AutomaticallyGenerated")]
+    partial class AutomaticallyGenerated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
