@@ -11,9 +11,10 @@ using System;
 namespace DataApp.Migrations
 {
     [DbContext(typeof(EFDatabaseContext))]
-    partial class EFDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180124192751_AdditionalTypes")]
+    partial class AdditionalTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
